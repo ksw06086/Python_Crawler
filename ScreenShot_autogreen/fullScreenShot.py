@@ -1,12 +1,35 @@
-import time, os, pyglet
+import time, os, pyglet, subprocess
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time_def import *
 from PIL import Image
 from fntParse import parse_fnt, render_text_to_image
+from io import BytesIO
 
 # 현재 파일 경로
 current_path = os.path.dirname(os.path.abspath(__file__))
+
+def compress_with_pngquant(pil_image):
+    buffer = BytesIO()
+    pil_image.save(buffer, format="PNG")
+    buffer.seek(0)
+    
+    # pngquant subprocess with stdin and stdout
+    process = subprocess.Popen(["C:\\BackDev\\pngquant-windows\\pngquant\\pngquant.exe", '-', '--quality', '60-80'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    stdout, _ = process.communicate(buffer.getvalue())
+    
+    compressed_buffer = BytesIO(stdout)
+    compressed_image = Image.open(compressed_buffer)
+    return compressed_image
+
+# def compress_image_with_pngquant(input_path, output_path, quality="65-80"):
+#     # pngquant를 호출하여 이미지 압축
+#     result = subprocess.run(["C:\\BackDev\\pngquant-windows\\pngquant\\pngquant.exe", "--quality", quality, "--force", "--output", output_path, input_path])
+
+#     if result.returncode != 0:
+#         raise Exception("pngquant 실행 중 오류 발생!")
+
+#     print(f"{input_path}를 {output_path}로 압축 완료!")
 
 def getResource(url):
     pyglet.resource.path.append(os.path.join(current_path, 'resource', 'font', 'black_font', 'url_font.fnt').replace('\\', '\\\\'))
@@ -81,8 +104,10 @@ def editImage(resourceImage, fileName):
 
     # 이미지 저장
     output_path = directory_path + f"/{fileName}.png"
-    # newImage.show() 
-    newImage.save(output_path, quality=100)
+    # newImage.show()
+
+    newImage = compress_with_pngquant(newImage)
+    newImage.save(output_path, optimize=True)
 
     return fileName + '.png'
 
