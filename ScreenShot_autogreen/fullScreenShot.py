@@ -32,24 +32,6 @@ def getResource(url):
 
     # 브라우저 바 png, 브라우저 바 폰트 png 병합
     urlBar.paste(url_text_img, (265, 32), url_text_img)  # (270, 28)은 텍스트를 배치할 좌표입니다.
-    
-    # #* 윈도우 바
-    # windowBar = Image.open(os.path.join(current_path, 'resource', 'window_bar.png'))
-
-    # # 윈도우 바 폰트 로드
-    # window_fnt_path = os.path.join(current_path, 'resource', 'font', 'white_font', 'time_font.fnt')
-    # window_png_path = os.path.join(current_path, 'resource', 'font', 'white_font', 'time_font_0.png')
-    # # 윈도우 바 폰트 파싱
-    # window_char_data = parse_fnt(window_fnt_path)
-    # # 윈도우 바 text 이미지 변환
-    # windowTime0_text_img = render_text_to_image(windowTime[0], window_char_data, window_png_path)
-    # windowTime1_text_img = render_text_to_image(windowTime[1], window_char_data, window_png_path)
-    # windowTime2_text_img = render_text_to_image(windowTime[2], window_char_data, window_png_path)
-
-    # # 윈도우 바 png, 윈도우 바 폰트 png 병합
-    # windowBar.paste(windowTime0_text_img, (windowBar.size[0] - 135, 12), windowTime0_text_img)
-    # windowBar.paste(windowTime1_text_img, (windowBar.size[0] - 84, 16), windowTime1_text_img)
-    # windowBar.paste(windowTime2_text_img, (windowBar.size[0] - 145, 43), windowTime2_text_img)
 
     #* UTCK 시계
     utck = Image.open(os.path.join(current_path, 'resource', 'utck.png'))
@@ -72,8 +54,7 @@ def getResource(url):
 
     return {
         'urlBar': urlBar,
-        'utck': utck,
-        # 'windowBar': windowBar,
+        'utck': utck
     }
 
 def editImage(resourceImage, fileName):
@@ -83,10 +64,8 @@ def editImage(resourceImage, fileName):
     # 리사이즈
     resourceImage['urlBar'] = resourceImage['urlBar'].resize((page.width, int(page.height * (resourceImage['urlBar'].height / resourceImage['urlBar'].width))), Image.LANCZOS)
     resourceImage['utck'] = resourceImage['utck'].resize((int(page.width / 4), int(page.height * (resourceImage['utck'].height / resourceImage['utck'].width) / 4)), Image.LANCZOS)
-    # resourceImage['windowBar'] = resourceImage['windowBar'].resize((page.width, int(page.height * (resourceImage['windowBar'].height / resourceImage['windowBar'].width))), Image.LANCZOS)
     
     # 새로운 이미지 생성
-    # newImage = Image.new("RGB", (page.width, page.height + resourceImage['urlBar'].height + resourceImage['windowBar'].height), (255, 255, 255))
     newImage = Image.new("RGB", (page.width, page.height + resourceImage['urlBar'].height), (255, 255, 255))
     
     # 이미지 합성
@@ -94,7 +73,6 @@ def editImage(resourceImage, fileName):
     utck_y = resourceImage['urlBar'].height + page.height - 140
     newImage.paste(resourceImage['utck'], (page.width - resourceImage['utck'].width, utck_y), resourceImage['utck'])
     newImage.paste(resourceImage['urlBar'], (0, 0), resourceImage['urlBar'])
-    # newImage.paste(resourceImage['windowBar'], (0, newImage.height - resourceImage['windowBar'].height), resourceImage['windowBar'])
 
     # 디렉토리 있는지 확인 후 없으면 생성
     directory_path = current_path.replace('\\', '/') + f"/{DateHelper.fileName(False)}"
@@ -111,21 +89,11 @@ def editImage(resourceImage, fileName):
 def full_screenshot(driver, url, output_path):
     driver.get(url)
     time.sleep(1)  # Give the page some time to load
-    
-    # total_height = driver.execute_script("return document.documentElement.scrollHeight")
-    # while True:
-    #     driver.execute_script(f"window.scrollTo(0, {total_height});")
-    #     time.sleep(0.5)
-    #     print(f"total_height : {total_height}");
-    #     print(f"driver_height : {driver.execute_script('return document.documentElement.scrollHeight')}");
-    #     if total_height == driver.execute_script("return document.documentElement.scrollHeight"):
-    #         break
-    #     total_height = driver.execute_script("return document.documentElement.scrollHeight")
-        
 
+    # 스크린 샷 화면 조정
     driver.set_window_size("884", "984")
 
-    # time.sleep(1)
+    # 사진 저장
     driver.save_screenshot(output_path)
 
 
