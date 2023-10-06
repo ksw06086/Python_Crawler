@@ -127,7 +127,7 @@ chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
 
 url = "https://www.xigayy.com/dianshiju/hanju/243868/"
-output_path = current_path.replace('\\', '/') + "/screenshot.png"
+output_path = current_path.replace('\\', '/') + "/screenshot.jpg"
 full_screenshot(driver, url, output_path)
 resource = getResource(url)
 filenameURL = editImage(resource, f"{'blog'}_{DateHelper.fileName()}")
