@@ -1,0 +1,6 @@
+COMMUNITY = '커뮤니티'
+SNS = 'SNS'
+PORTAL = '포털'
+NEWS = 'NEWS'
+XPATH = 'xpath'
+SELECTOR = 'selector'
