@@ -3,7 +3,7 @@ from sys import argv
 from osp_init import init_by_osp
 from db.mysql_service import companyBoardMysql
 import traceback
-osp_name = "네이버_블로그"#argv[1]
+osp_name = "유튜브"#argv[1]
 try:
     size = argv[2]
     offset = argv[3]

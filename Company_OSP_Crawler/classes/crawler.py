@@ -257,6 +257,7 @@ class Crawler:
         #        해당 경우에는, 상대적인 시간을 절대적인 datetime 객체로 변환
         if '전' in self.data.write_date:
             self.data.write_date = sub(r'(\d+)(?!\s)', r'\1 ', self.data.write_date)
+            print(self.data.write_date)
             # 해석 : 날짜 문자열을 공백으로 분할하여 토큰으로 만듦
             tokens = self.data.write_date.split(' ')
             # 해석 : 토큰을 기반으로 상대적인 시간의 단위(초, 분, 시간, 일, 주, 개월, 년)를 파악하고, 해당 단위에 따라 timedelta 객체를 생성
